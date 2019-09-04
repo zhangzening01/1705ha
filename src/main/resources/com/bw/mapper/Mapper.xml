@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- namespace 工作空间
+	 名称目前可以随便起，没有约束
+ -->
+<mapper namespace="com.bw.mapper.MovDao">
+   <!-- 列表 -->
+   <select id="findAll" resultType="com.bw.entity.Moven" parameterType="string">
+       select m.*,GROUP_CONCAT(t.tname) as tname,GROUP_CONCAT(t.tid) as tid from type t,moven m,moddle d where d.tid=t.tid and d.mid = m.mid 
+       <if test="mname !=null and mname !=''">
+        and m.mname like concat("%",#{mname},"%")
+       </if>
+       group by m.mid
+    </select>
+    <!-- 添加 -->
+    <insert id="save" parameterType="com.bw.entity.Moven">
+     insert into moven(mname,mas,dao,sdate) values(#{mname},#{mas},#{dao},#{sdate})
+     <selectKey order="AFTER" keyProperty="mid" resultType="int">
+      select last_insert_id() as mid
+     </selectKey>
+    </insert>
+    <insert id="saves" parameterType="map">
+     insert into moddle(tid,mid) values(#{tid},#{mid})
+    </insert>
+    
+    <select id="toup" parameterType="int" resultType="com.bw.entity.Moven">
+     select m.*,GROUP_CONCAT(t.tname) as tname,GROUP_CONCAT(t.tid) as tid from type t,moven m,moddle d 
+     where d.tid=t.tid and d.mid = m.mid and m.mid=#{0}
+     group by m.mid
+    </select>
+    
+    <update id="update" parameterType="com.bw.entity.Moven">
+      update moven set mname=#{mname},mas=#{mas},dao=#{dao},sdate=#{sdate} where mid=#{mid}
+    </update>
+    
+    <delete id="delmid" parameterType="int">
+     delete from moddle where mid=#{0}
+    </delete>
+    
+    <delete id="del" parameterType="string" >
+     delete from moven where mid in (${_parameter})
+    </delete>
+</mapper>
