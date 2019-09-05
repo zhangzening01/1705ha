@@ -61,7 +61,9 @@ public class MovController {
        @RequestMapping("delAll.do")
        @ResponseBody
        public boolean del(String mid){
+    	   1111111111111111111111
     	   int i = service.del(mid);
     	   return true;
+    	   1111111111111111111111
        }
 }
