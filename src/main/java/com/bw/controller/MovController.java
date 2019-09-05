@@ -62,8 +62,10 @@ public class MovController {
        @ResponseBody
        public boolean del(String mid){
     	   1111111111111111111111
+    	   222222222222222222222
     	   int i = service.del(mid);
     	   return true;
     	   1111111111111111111111
+    	   222222222222222222222
        }
 }
